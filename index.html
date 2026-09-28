@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pure Dairy | Fresh Dairy Products Delivered Daily</title>
+<meta name="description" content="Pure Dairy delivers farm-fresh milk, curd, paneer, butter, cheese, ghee, yogurt and ice cream every morning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Loading animation -->
+<div id="loader"><div class="drop"></div><p>Pure Dairy</p></div>
+
+<!-- Navigation -->
+<header id="navbar">
+  <nav class="container nav">
+    <a href="#home" class="logo">Pure<span>Dairy</span></a>
+    <ul id="menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">🌙</button>
+      <button id="cartBtn" class="icon-btn" aria-label="Open cart">🛒<b id="cartCount">0</b></button>
+      <button id="burger" class="icon-btn burger" aria-label="Open menu">☰</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+<!-- Hero -->
+<section id="home" class="hero">
+  <div class="container hero-inner">
+    <div class="glass hero-card">
+      <h1>Fresh Dairy Products Delivered Daily</h1>
+      <p>Milked at dawn on our family farms in Punjab, tested in our lab by noon, and at your door before breakfast. No shortcuts, no preservatives.</p>
+      <div class="btns">
+        <a href="#products" class="btn primary">Shop Now</a>
+        <a href="#categories" class="btn ghost">Explore Products</a>
+      </div>
+      <ul class="hero-stats">
+        <li><b>25,000+</b> households served</li>
+        <li><b>6 AM</b> delivery slot</li>
+        <li><b>0</b> preservatives</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<section id="categories" class="section">
+  <div class="container">
+    <h2>Shop by category</h2>
+    <p class="sub">Eight everyday staples, made from the same farm-fresh milk.</p>
+    <div id="categoryGrid" class="cat-grid"></div>
+  </div>
+</section>
+
+<!-- Products -->
+<section id="products" class="section alt">
+  <div class="container">
+    <h2>Our products</h2>
+    <p class="sub">Search, filter and sort to find exactly what your kitchen needs.</p>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
+      <select id="filter" aria-label="Filter by category"></select>
+      <select id="sort" aria-label="Sort products">
+        <option value="default">Sort: Featured</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+        <option value="rating">Rating</option>
+        <option value="name">Name</option>
+      </select>
+    </div>
+    <div id="productGrid" class="grid"></div>
+    <p id="noResults" class="empty" hidden>No products match your search. Try a different word or category.</p>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="section">
+  <div class="container about">
+    <img src="https://loremflickr.com/700/560/dairy,farm,cow?lock=11" alt="Cows grazing at the Pure Dairy farm" loading="lazy" onerror="this.style.display='none'">
+    <div>
+      <h2>Our story</h2>
+      <p>Pure Dairy began in 1998 with twelve cows and a simple promise: sell only what we would feed our own children. Today our farms near Ludhiana care for over 1,200 cows, and every bottle still carries the date it was milked.</p>
+      <div class="mv">
+        <div class="glass"><h3>Mission</h3><p>Make honest, nutritious dairy affordable for every home.</p></div>
+        <div class="glass"><h3>Vision</h3><p>A dairy chain where farmers, animals and families all thrive.</p></div>
+      </div>
+      <h3>Our farms</h3>
+      <p>Cows graze on open pasture and eat organic fodder grown on-site. Milking is hygienic and automated, and milk is chilled to 4°C within minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Why choose us -->
+<section class="section alt" id="why">
+  <div class="container">
+    <h2>Why choose us</h2>
+    <div id="whyGrid" class="why-grid"></div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section" id="testimonials">
+  <div class="container">
+    <h2>Loved by our customers</h2>
+    <div id="testiGrid" class="testi-grid"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section alt" id="faq">
+  <div class="container narrow">
+    <h2>Frequently asked questions</h2>
+    <div id="faqList"></div>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="newsletter">
+  <div class="container">
+    <h2>Get fresh offers in your inbox</h2>
+    <p>Weekly recipes, seasonal specials and subscriber-only discounts.</p>
+    <form id="newsForm" novalidate>
+      <input id="newsEmail" type="email" placeholder="you@example.com" aria-label="Email address">
+      <button class="btn primary" type="submit">Subscribe</button>
+    </form>
+    <small id="newsMsg" role="status"></small>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="section">
+  <div class="container">
+    <h2>Contact us</h2>
+    <div class="contact">
+      <form id="contactForm" class="glass" novalidate>
+        <label>Name<input id="cName" type="text"><small></small></label>
+        <label>Email<input id="cEmail" type="email"><small></small></label>
+        <label>Phone<input id="cPhone" type="tel" placeholder="10-digit mobile number"><small></small></label>
+        <label>Message<textarea id="cMsg" rows="4"></textarea><small></small></label>
+        <button class="btn primary" type="submit">Send message</button>
+        <p id="formMsg" role="status"></p>
+      </form>
+      <div>
+        <ul class="info">
+          <li>✉️ <a href="mailto:hello@puredairy.example">hello@puredairy.example</a></li>
+          <li>📞 <a href="tel:+911610000000">+91 161 000 0000</a></li>
+          <li>📍 Pure Dairy Farms, Ferozepur Road, Ludhiana, Punjab 141001</li>
+        </ul>
+        <iframe title="Pure Dairy location" loading="lazy" src="https://www.google.com/maps?q=Ferozepur+Road,+Ludhiana,+Punjab&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="container foot">
+    <div><a href="#home" class="logo">Pure<span>Dairy</span></a><p>Farm-fresh dairy, delivered daily.</p>
+      <div class="social"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">ig</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="YouTube">▶</a></div></div>
+    <div><h4>Quick links</h4><a href="#home">Home</a><a href="#products">Products</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
+    <div><h4>Categories</h4><div id="footCats"></div></div>
+  </div>
+  <p class="copy">© <span id="year"></span> Pure Dairy. All rights reserved.</p>
+</footer>
+
+<!-- Cart sidebar -->
+<div id="overlay"></div>
+<aside id="cart" aria-label="Shopping cart">
+  <div class="cart-head"><h3>Your cart</h3><button id="closeCart" class="icon-btn" aria-label="Close cart">✕</button></div>
+  <div id="cartItems"></div>
+  <div class="cart-foot">
+    <p><span>Subtotal</span><b id="subtotal">₹0.00</b></p>
+    <p><span>GST (5%)</span><b id="tax">₹0.00</b></p>
+    <p class="total"><span>Total</span><b id="total">₹0.00</b></p>
+    <button id="checkout" class="btn primary block">Checkout</button>
+  </div>
+</aside>
+
+<div id="toast" role="status"></div>
+<button id="toTop" aria-label="Scroll to top">↑</button>
+<script src="script.js"></script>
+</body>
+</html>
