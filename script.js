@@ -6,7 +6,7 @@ const products = [
     category: "ghee",
     price: 850,
     rating: 5.0,
-    img: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=600&q=80",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh1ANeGVv9QAD4t3SN6PlF5ocZhwo1FUgfPKW1Oeg4FnfuxK2b6PPBXZlG&s=10",
     desc: "Hand-churned from organic A2 cow curd using traditional earthen pots in Jalandhar Cantt."
   },
   {
@@ -24,7 +24,7 @@ const products = [
     category: "ghee",
     price: 700,
     rating: 4.7,
-    img: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=600&q=80",
+    img: "https://nutriley.com/wp-content/uploads/2024/12/desi-ghee.jpg",
     desc: "Creamy white ghee ideal for sweets, high heat cooking, and daily energy."
   },
   {
@@ -33,7 +33,7 @@ const products = [
     category: "milk",
     price: 66,
     rating: 4.9,
-    img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvO4zxx5B0Xc1z7I9DGAic0FSjiOae5jpkdgmWtECS1O6Y_FvyWjE4bGXa&s=10",
     desc: "Pure pasteurized whole cow milk delivered before 6 AM daily."
   },
   {
@@ -42,7 +42,7 @@ const products = [
     category: "paneer",
     price: 120,
     rating: 4.9,
-    img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80",
+    img: "https://t4.ftcdn.net/jpg/03/28/04/73/360_F_328047334_Lh0T4Fgn7Cltq8U0rxkfeOzCfEtCiREu.jpg",
     desc: "Fresh, extra soft cottage cheese made every morning."
   },
   {
@@ -77,9 +77,9 @@ const products = [
 // Categories
 const categories = [
   { id: "all", name: "All Products" },
-  { id: "ghee", name: "Desi Ghee", img: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=400&q=80" },
+  { id: "ghee", name: "Desi Ghee", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh1ANeGVv9QAD4t3SN6PlF5ocZhwo1FUgfPKW1Oeg4FnfuxK2b6PPBXZlG&s=10" },
   { id: "milk", name: "Fresh Milk", img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=400&q=80" },
-  { id: "paneer", name: "Paneer", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" },
+  { id: "paneer", name: "Paneer", img: "https://t4.ftcdn.net/jpg/03/28/04/73/360_F_328047334_Lh0T4Fgn7Cltq8U0rxkfeOzCfEtCiREu.jpg" },
   { id: "butter", name: "Butter & Makhan", img: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=400&q=80" },
   { id: "curd", name: "Fresh Curd", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=400&q=80" }
 ];
@@ -188,9 +188,9 @@ function renderWhyUs() {
   const grid = document.getElementById("whyGrid");
   grid.innerHTML = whyUs.map(w => `
     <div class="feature-box">
-      <div style="font-size:2rem;margin-bottom:10px">${w.icon}</div>
+      <div style="font-size:1.8rem;margin-bottom:8px">${w.icon}</div>
       <h3>${w.title}</h3>
-      <p style="color:var(--text-muted);margin-top:6px">${w.text}</p>
+      <p style="color:var(--text-muted);margin-top:4px;font-size:0.85rem">${w.text}</p>
     </div>
   `).join('');
 }
@@ -203,10 +203,10 @@ function renderTestimonials() {
         <img src="${t.img}" alt="${t.name}">
         <div>
           <h4>${t.name}</h4>
-          <small style="color:var(--text-muted)">${t.location}</small>
+          <small style="color:var(--text-muted);font-size:0.8rem">${t.location}</small>
         </div>
       </div>
-      <p>"${t.text}"</p>
+      <p style="font-size:0.9rem">"${t.text}"</p>
     </div>
   `).join('');
 }
@@ -352,19 +352,19 @@ function updateCartUI() {
   shipProgress.style.width = `${progressPercent}%`;
 
   if(cart.length === 0) {
-    cartItems.innerHTML = `<p style="text-align:center;color:var(--text-muted);margin-top:40px;">Your basket is empty.</p>`;
+    cartItems.innerHTML = `<p style="text-align:center;color:var(--text-muted);margin-top:30px;">Your basket is empty.</p>`;
   } else {
     cartItems.innerHTML = cart.map(item => `
       <div class="cart-item">
         <img src="${item.img}" alt="${item.name}">
         <div style="flex:1">
-          <h4 style="font-size:0.95rem">${item.name}</h4>
+          <h4 style="font-size:0.9rem">${item.name}</h4>
           <span style="color:var(--primary);font-weight:bold">₹${item.price}</span>
         </div>
         <div style="display:flex;align-items:center;gap:6px">
-          <button onclick="changeQty('${item.id}', -1)" class="icon-btn" style="width:28px;height:28px">-</button>
+          <button onclick="changeQty('${item.id}', -1)" class="icon-btn" style="width:26px;height:26px">-</button>
           <span>${item.qty}</span>
-          <button onclick="changeQty('${item.id}', 1)" class="icon-btn" style="width:28px;height:28px">+</button>
+          <button onclick="changeQty('${item.id}', 1)" class="icon-btn" style="width:26px;height:26px">+</button>
         </div>
       </div>
     `).join('');
@@ -382,11 +382,11 @@ function openProductModal(id) {
 
   const modalBody = document.getElementById("modalBody");
   modalBody.innerHTML = `
-    <img src="${product.img}" alt="${product.name}" style="width:100%;height:250px;object-fit:cover;border-radius:12px;margin-bottom:16px;">
+    <img src="${product.img}" alt="${product.name}" style="width:100%;height:200px;object-fit:cover;border-radius:10px;margin-bottom:12px;">
     <h2>${product.name}</h2>
-    <p style="color:var(--text-muted);margin:10px 0;">${product.desc}</p>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;">
-      <span style="font-size:1.6rem;font-weight:bold;color:var(--primary)">₹${product.price}</span>
+    <p style="color:var(--text-muted);margin:8px 0;font-size:0.9rem;">${product.desc}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;">
+      <span style="font-size:1.4rem;font-weight:bold;color:var(--primary)">₹${product.price}</span>
       <button class="btn primary" onclick="addToCart('${product.id}');closeModal();">Add to Cart</button>
     </div>
   `;
