@@ -2,194 +2,1126 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pure Dairy | Fresh Dairy Products Delivered Daily</title>
-<meta name="description" content="Pure Dairy delivers farm-fresh milk, curd, paneer, butter, cheese, ghee, yogurt and ice cream every morning.">
+<meta name="description" content="Pure Dairy delivers farm-fresh milk, curd, paneer, butter, cheese, ghee, yogurt and ice cream every morning straight from Punjab farms.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Fraunces:ital,opsz,wght@0,9..144,400..900;1,9..144,400..900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          brand: {
+            50: '#f0fdf4',
+            100: '#dcfce7',
+            200: '#bbf7d0',
+            500: '#22c55e',
+            600: '#16a34a',
+            700: '#15803d',
+            800: '#0f5a37',
+            900: '#0c462b',
+          },
+          cream: {
+            50: '#ffffff',
+            100: '#fffdf7',
+            200: '#fcf8ec',
+            300: '#f4efe6',
+            400: '#e5dec9',
+            900: '#2c2518'
+          }
+        },
+        fontFamily: {
+          sans: ['DM Sans', 'sans-serif'],
+          serif: ['Fraunces', 'serif']
+        }
+      }
+    }
+  }
+</script>
+<style>
+:root {
+  --bg-primary: #FFFDF7;
+  --bg-secondary: #F4EFE6;
+  --text-main: #1D2939;
+  --text-muted: #475467;
+  --border-color: rgba(15, 90, 55, 0.12);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --shadow-soft: 0 10px 30px -5px rgba(15, 90, 55, 0.08);
+  --accent-green: #0F5A37;
+  --accent-gold: #D97706;
+}
+
+.dark {
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(30, 41, 59, 0.85);
+  --glass-bg: rgba(15, 23, 42, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+  --accent-green: #22C55E;
+  --accent-gold: #F59E0B;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: 'DM Sans', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+.product-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px -10px rgba(15, 90, 55, 0.15);
+}
+
+.img-zoom-wrapper {
+  overflow: hidden;
+}
+.img-zoom-wrapper img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.img-zoom-wrapper:hover img {
+  transform: scale(1.08);
+}
+
+/* Custom Loader Pulse */
+@keyframes dropPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.8; }
+}
+.drop-anim {
+  animation: dropPulse 1.8s infinite ease-in-out;
+}
+
+/* Hide scrollbars for clean Look */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>
 </head>
-<body>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
 
-<!-- Loading animation -->
-<div id="loader"><div class="drop"></div><p>Pure Dairy</p></div>
+<div id="loader" class="fixed inset-0 z-[100] bg-cream-100 dark:bg-slate-900 flex flex-col items-center justify-center transition-opacity duration-500">
+  <div class="relative flex items-center justify-center">
+    <div class="w-16 h-16 rounded-full bg-brand-500/20 drop-anim flex items-center justify-center">
+      <div class="w-10 h-10 rounded-full bg-brand-700 flex items-center justify-center text-white text-xl">🥛</div>
+    </div>
+  </div>
+  <h2 class="mt-4 text-2xl font-serif font-bold text-brand-800 dark:text-brand-500 tracking-wide">Pure<span class="text-amber-600">Dairy</span></h2>
+  <p class="text-xs text-stone-500 dark:text-slate-400 mt-1 font-medium">Freshness in every drop...</p>
+</div>
 
-<!-- Navigation -->
-<header id="navbar">
-  <nav class="container nav">
-    <a href="#home" class="logo">Pure<span>Dairy</span></a>
-    <ul id="menu">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#products">Products</a></li>
-      <li><a href="#categories">Categories</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+<header id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-4 glass-panel border-b border-stone-200/50 dark:border-slate-800">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-2 group">
+      <div class="w-10 h-10 rounded-xl bg-brand-800 dark:bg-brand-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.6 15.12a2 2 0 01-1.183-1.229l-2-5a2 2 0 011.02-2.486l1.2-.6a2 2 0 012.28.32l1.62 1.458a6 6 0 004.1.916l.48-.08a6 6 0 014.1.916l1.62 1.458a2 2 0 01.558 1.942l-.8 2.671z"></path></svg>
+      </div>
+      <span class="font-serif font-bold text-2xl tracking-tight text-brand-900 dark:text-stone-100">Pure<span class="text-amber-600">Dairy</span></span>
+    </a>
+
+    <ul id="menu" class="hidden md:flex items-center space-x-8 text-sm font-medium text-stone-700 dark:text-slate-200">
+      <li><a href="#home" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Home</a></li>
+      <li><a href="#categories" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Categories</a></li>
+      <li><a href="#products" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Products</a></li>
+      <li><a href="#about" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Our Story</a></li>
+      <li><a href="#why" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Why Us</a></li>
+      <li><a href="#contact" class="hover:text-brand-700 dark:hover:text-brand-400 transition-colors py-1 border-b-2 border-transparent hover:border-brand-600">Contact</a></li>
     </ul>
-    <div class="nav-actions">
-      <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode">🌙</button>
-      <button id="cartBtn" class="icon-btn" aria-label="Open cart">🛒<b id="cartCount">0</b></button>
-      <button id="burger" class="icon-btn burger" aria-label="Open menu">☰</button>
+
+    <div class="flex items-center space-x-3">
+      <!-- Dark mode toggle -->
+      <button id="themeToggle" class="p-2.5 rounded-full bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-amber-400 hover:scale-105 active:scale-95 transition-all shadow-sm" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+
+      <!-- Cart Button -->
+      <button id="cartBtn" class="relative p-2.5 rounded-full bg-brand-800 text-white hover:bg-brand-900 dark:bg-brand-600 dark:hover:bg-brand-700 hover:scale-105 active:scale-95 transition-all shadow-md flex items-center gap-2 px-3.5" aria-label="Open cart">
+        <span>🛒</span>
+        <span class="text-xs font-bold hidden sm:inline">Cart</span>
+        <span id="cartCount" class="bg-amber-500 text-brand-950 text-xs font-extrabold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+      </button>
+
+      <!-- Mobile menu button -->
+      <button id="burger" class="md:hidden p-2.5 rounded-xl bg-stone-100 dark:bg-slate-800 text-stone-800 dark:text-stone-200" aria-label="Toggle navigation menu">
+        <span class="text-xl">☰</span>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile nav dropdown -->
+  <div id="mobileMenu" class="hidden md:hidden px-4 pt-3 pb-6 border-t border-stone-200 dark:border-slate-800 mt-3 bg-cream-100 dark:bg-slate-900 shadow-xl">
+    <div class="flex flex-col space-y-3 font-medium text-stone-700 dark:text-slate-200">
+      <a href="#home" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Home</a>
+      <a href="#categories" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Categories</a>
+      <a href="#products" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Products</a>
+      <a href="#about" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Our Story</a>
+      <a href="#why" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Why Choose Us</a>
+      <a href="#contact" class="mobile-link py-2 px-3 rounded-lg hover:bg-brand-50 dark:hover:bg-slate-800">Contact Us</a>
+    </div>
+  </div>
 </header>
 
-<main>
-<!-- Hero -->
-<section id="home" class="hero">
-  <div class="container hero-inner">
-    <div class="glass hero-card">
-      <h1>Fresh Dairy Products Delivered Daily</h1>
-      <p>Milked at dawn on our family farms in Punjab, tested in our lab by noon, and at your door before breakfast. No shortcuts, no preservatives.</p>
-      <div class="btns">
-        <a href="#products" class="btn primary">Shop Now</a>
-        <a href="#categories" class="btn ghost">Explore Products</a>
+<main class="pt-20">
+<section id="home" class="relative min-h-[90vh] flex items-center justify-center py-20 px-4 overflow-hidden">
+  <!-- Unsplash Hero Background with overlay -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=1920&q=80" alt="Punjab organic dairy farm pasture with sunrise" class="w-full h-full object-cover object-center transform scale-105 animate-pulse-slow">
+    <div class="absolute inset-0 bg-gradient-to-r from-stone-950/85 via-stone-900/70 to-transparent"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <div class="lg:col-span-8 text-white space-y-6">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs sm:text-sm font-semibold backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <span>Morning Express Delivery Available in Ludhiana</span>
       </div>
-      <ul class="hero-stats">
-        <li><b>25,000+</b> households served</li>
-        <li><b>6 AM</b> delivery slot</li>
-        <li><b>0</b> preservatives</li>
-      </ul>
-    </div>
-  </div>
-</section>
+      
+      <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15]">
+        Farm-Fresh Milk & Pure Dairy <br><span class="text-amber-400 italic font-normal">Delivered Daily.</span>
+      </h1>
+      
+      <p class="text-stone-200 text-base sm:text-lg max-w-2xl font-normal leading-relaxed">
+        Milked at dawn from grass-fed cows on our family farms, laboratory-tested by noon, and placed right outside your doorstep before breakfast. Zero preservatives, 100% pure nutrition.
+      </p>
 
-<!-- Categories -->
-<section id="categories" class="section">
-  <div class="container">
-    <h2>Shop by category</h2>
-    <p class="sub">Eight everyday staples, made from the same farm-fresh milk.</p>
-    <div id="categoryGrid" class="cat-grid"></div>
-  </div>
-</section>
-
-<!-- Products -->
-<section id="products" class="section alt">
-  <div class="container">
-    <h2>Our products</h2>
-    <p class="sub">Search, filter and sort to find exactly what your kitchen needs.</p>
-    <div class="toolbar">
-      <input id="search" type="search" placeholder="Search products…" aria-label="Search products">
-      <select id="filter" aria-label="Filter by category"></select>
-      <select id="sort" aria-label="Sort products">
-        <option value="default">Sort: Featured</option>
-        <option value="low">Price: Low to High</option>
-        <option value="high">Price: High to Low</option>
-        <option value="rating">Rating</option>
-        <option value="name">Name</option>
-      </select>
-    </div>
-    <div id="productGrid" class="grid"></div>
-    <p id="noResults" class="empty" hidden>No products match your search. Try a different word or category.</p>
-  </div>
-</section>
-
-<!-- About -->
-<section id="about" class="section">
-  <div class="container about">
-    <img src="https://loremflickr.com/700/560/dairy,farm,cow?lock=11" alt="Cows grazing at the Pure Dairy farm" loading="lazy" onerror="this.style.display='none'">
-    <div>
-      <h2>Our story</h2>
-      <p>Pure Dairy began in 1998 with twelve cows and a simple promise: sell only what we would feed our own children. Today our farms near Ludhiana care for over 1,200 cows, and every bottle still carries the date it was milked.</p>
-      <div class="mv">
-        <div class="glass"><h3>Mission</h3><p>Make honest, nutritious dairy affordable for every home.</p></div>
-        <div class="glass"><h3>Vision</h3><p>A dairy chain where farmers, animals and families all thrive.</p></div>
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="#products" class="px-8 py-4 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold text-base shadow-xl shadow-brand-900/40 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+          <span>Shop Fresh Milk</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </a>
+        <a href="#categories" class="px-8 py-4 rounded-xl glass-panel hover:bg-white/20 text-white font-semibold text-base border border-white/30 hover:scale-105 active:scale-95 transition-all">
+          Explore Categories
+        </a>
       </div>
-      <h3>Our farms</h3>
-      <p>Cows graze on open pasture and eat organic fodder grown on-site. Milking is hygienic and automated, and milk is chilled to 4°C within minutes.</p>
+
+      <!-- Live Delivery Timer Widget -->
+      <div class="pt-6 border-t border-white/15 grid grid-cols-3 gap-4 max-w-lg">
+        <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/10">
+          <p class="text-xs text-stone-300 font-medium">Daily Delivery Slot</p>
+          <p class="text-lg font-bold text-amber-400">5:30 AM - 7:30 AM</p>
+        </div>
+        <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/10">
+          <p class="text-xs text-stone-300 font-medium">Families Served</p>
+          <p class="text-lg font-bold text-white">25,000+</p>
+        </div>
+        <div class="bg-black/30 backdrop-blur-md rounded-xl p-3 border border-white/10">
+          <p class="text-xs text-stone-300 font-medium">Purity Guarantee</p>
+          <p class="text-lg font-bold text-emerald-400">100% Organic</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Why choose us -->
-<section class="section alt" id="why">
-  <div class="container">
-    <h2>Why choose us</h2>
-    <div id="whyGrid" class="why-grid"></div>
+<section id="categories" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="text-center max-w-2xl mx-auto mb-14">
+    <span class="text-brand-700 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Pure & Unadulterated</span>
+    <h2 class="font-serif text-3xl sm:text-5xl font-bold mt-2 text-stone-900 dark:text-white">Shop By Category</h2>
+    <p class="text-stone-600 dark:text-slate-400 mt-3 text-base">Eight everyday essential staples crafted from farm-fresh, unpasteurized high-grade milk.</p>
+  </div>
+
+  <div id="categoryGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+    <!-- Populated dynamically via script.js with Unsplash images -->
   </div>
 </section>
 
-<!-- Testimonials -->
-<section class="section" id="testimonials">
-  <div class="container">
-    <h2>Loved by our customers</h2>
-    <div id="testiGrid" class="testi-grid"></div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section alt" id="faq">
-  <div class="container narrow">
-    <h2>Frequently asked questions</h2>
-    <div id="faqList"></div>
-  </div>
-</section>
-
-<!-- Newsletter -->
-<section class="newsletter">
-  <div class="container">
-    <h2>Get fresh offers in your inbox</h2>
-    <p>Weekly recipes, seasonal specials and subscriber-only discounts.</p>
-    <form id="newsForm" novalidate>
-      <input id="newsEmail" type="email" placeholder="you@example.com" aria-label="Email address">
-      <button class="btn primary" type="submit">Subscribe</button>
-    </form>
-    <small id="newsMsg" role="status"></small>
-  </div>
-</section>
-
-<!-- Contact -->
-<section id="contact" class="section">
-  <div class="container">
-    <h2>Contact us</h2>
-    <div class="contact">
-      <form id="contactForm" class="glass" novalidate>
-        <label>Name<input id="cName" type="text"><small></small></label>
-        <label>Email<input id="cEmail" type="email"><small></small></label>
-        <label>Phone<input id="cPhone" type="tel" placeholder="10-digit mobile number"><small></small></label>
-        <label>Message<textarea id="cMsg" rows="4"></textarea><small></small></label>
-        <button class="btn primary" type="submit">Send message</button>
-        <p id="formMsg" role="status"></p>
-      </form>
+<section id="products" class="py-20 px-4 sm:px-6 lg:px-8 bg-cream-200/50 dark:bg-slate-800/40 border-y border-stone-200/60 dark:border-slate-800">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
       <div>
-        <ul class="info">
-          <li>✉️ <a href="mailto:hello@puredairy.example">hello@puredairy.example</a></li>
-          <li>📞 <a href="tel:+911610000000">+91 161 000 0000</a></li>
-          <li>📍 Pure Dairy Farms, Ferozepur Road, Ludhiana, Punjab 141001</li>
-        </ul>
-        <iframe title="Pure Dairy location" loading="lazy" src="https://www.google.com/maps?q=Ferozepur+Road,+Ludhiana,+Punjab&output=embed"></iframe>
+        <span class="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-widest">Farm Fresh Store</span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold mt-1 text-stone-900 dark:text-white">Our Fresh Products</h2>
+        <p class="text-stone-600 dark:text-slate-400 mt-2 text-sm sm:text-base">Filter, search and order morning essentials directly to your kitchen.</p>
+      </div>
+
+      <!-- Controls & Filter Toolbar -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="relative flex-1 min-w-[200px]">
+          <input id="search" type="search" placeholder="Search milk, ghee, curd..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-800 dark:text-stone-100 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none shadow-sm">
+          <span class="absolute left-3 top-3 text-stone-400 text-sm">🔍</span>
+        </div>
+
+        <select id="filter" class="px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-800 dark:text-stone-100 text-sm font-medium focus:ring-2 focus:ring-brand-600 focus:outline-none shadow-sm">
+          <!-- Populated by JS -->
+        </select>
+
+        <select id="sort" class="px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-800 dark:text-stone-100 text-sm font-medium focus:ring-2 focus:ring-brand-600 focus:outline-none shadow-sm">
+          <option value="default">Sort: Featured</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="name">Name (A-Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Populated dynamically with dynamic images & lightboxes -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="noResults" class="hidden text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-stone-300 dark:border-slate-800 mt-6">
+      <span class="text-5xl">🥣</span>
+      <h3 class="text-xl font-bold mt-4 text-stone-800 dark:text-stone-200">No dairy items matched your search</h3>
+      <p class="text-stone-500 text-sm mt-1">Try searching for keywords like "Milk", "Ghee", or "Paneer"</p>
+      <button onclick="resetFilters()" class="mt-4 px-5 py-2 bg-brand-700 text-white text-xs font-bold rounded-xl hover:bg-brand-800">Reset Search</button>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <div class="lg:col-span-6 space-y-6">
+      <div class="relative rounded-3xl overflow-hidden shadow-2xl img-zoom-wrapper group">
+        <img src="https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&w=1200&q=80" alt="Organic dairy cows grazing on Punjabi green pastures" class="w-full h-[480px] object-cover">
+        <div class="absolute bottom-6 left-6 right-6 p-6 glass-panel rounded-2xl text-stone-900 dark:text-stone-100 shadow-lg">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🌾</span>
+            <div>
+              <h4 class="font-bold text-base">Ethical & Free-Range Grazing</h4>
+              <p class="text-xs text-stone-600 dark:text-slate-300 mt-0.5">Over 1,200 happy cows fed with organic clover fodder.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-6 space-y-6">
+      <span class="text-brand-700 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Established 1998</span>
+      <h2 class="font-serif text-3xl sm:text-5xl font-bold text-stone-900 dark:text-white leading-tight">Our Story: From 12 Cows to Punjab's Favorite Dairy</h2>
+      <p class="text-stone-600 dark:text-slate-300 leading-relaxed">
+        Pure Dairy started over two decades ago near Ludhiana with twelve cows and a firm promise: deliver unadulterated milk as pure as mother nature intended. Today, our automated chilling unit maintains milk at 4°C within 15 minutes of milking to preserve raw vitamins, probiotics, and rich flavor.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div class="p-5 rounded-2xl bg-cream-200/70 dark:bg-slate-800 border border-stone-200/80 dark:border-slate-700">
+          <h3 class="font-serif text-lg font-bold text-brand-900 dark:text-brand-400">Our Mission</h3>
+          <p class="text-xs text-stone-600 dark:text-slate-300 mt-1">Provide honest, unadulterated, nutrient-dense daily essentials directly to modern households.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-cream-200/70 dark:bg-slate-800 border border-stone-200/80 dark:border-slate-700">
+          <h3 class="font-serif text-lg font-bold text-brand-900 dark:text-brand-400">Our Vision</h3>
+          <p class="text-xs text-stone-600 dark:text-slate-300 mt-1">Build a sustainable eco-dairy where farmers, livestock, and conscious families thrive together.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why" class="py-20 px-4 sm:px-6 lg:px-8 bg-cream-200/40 dark:bg-slate-900/60 border-t border-stone-200/60 dark:border-slate-800">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <span class="text-amber-600 font-bold text-xs uppercase tracking-widest">Quality Assured</span>
+      <h2 class="font-serif text-3xl sm:text-5xl font-bold mt-2 text-stone-900 dark:text-white">Why Choose Pure Dairy?</h2>
+      <p class="text-stone-600 dark:text-slate-400 mt-2 text-base">We set the gold standard in fresh daily farm deliveries.</p>
+    </div>
+
+    <div id="whyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+</section>
+
+<section id="testimonials" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="text-center max-w-2xl mx-auto mb-14">
+    <span class="text-brand-700 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Customer Reviews</span>
+    <h2 class="font-serif text-3xl sm:text-5xl font-bold mt-2 text-stone-900 dark:text-white">Loved By 25,000+ Households</h2>
+    <p class="text-stone-600 dark:text-slate-400 mt-2 text-base">Read why families trust our morning doorstep service every single day.</p>
+  </div>
+
+  <div id="testiGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Populated via script.js -->
+  </div>
+</section>
+
+<section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 bg-cream-200/40 dark:bg-slate-800/40 border-t border-stone-200/60 dark:border-slate-800">
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-12">
+      <span class="text-amber-600 font-bold text-xs uppercase tracking-widest">Got Questions?</span>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold mt-2 text-stone-900 dark:text-white">Frequently Asked Questions</h2>
+    </div>
+    <div id="faqList" class="space-y-4">
+      <!-- Dynamic Accordions created via script.js -->
+    </div>
+  </div>
+</section>
+
+<section class="py-16 px-4 bg-brand-800 text-white relative overflow-hidden">
+  <div class="max-w-4xl mx-auto text-center relative z-10 space-y-4">
+    <span class="text-amber-400 text-3xl">🥛</span>
+    <h2 class="font-serif text-3xl sm:text-5xl font-bold">Subscribe & Get 15% Off First Delivery</h2>
+    <p class="text-brand-100 max-w-xl mx-auto text-sm sm:text-base">Receive weekly organic recipes, seasonal milk deals, and morning subscription discounts.</p>
+    
+    <form id="newsForm" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-4" novalidate>
+      <input id="newsEmail" type="email" placeholder="Enter your email address" class="px-5 py-3.5 rounded-xl text-stone-900 focus:outline-none flex-1 text-sm shadow-inner" required>
+      <button type="submit" class="px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold rounded-xl text-sm transition-all shadow-lg active:scale-95">Subscribe Now</button>
+    </form>
+    <p id="newsMsg" class="text-xs font-semibold text-amber-300 min-h-[20px]"></p>
+  </div>
+</section>
+
+<section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <span class="text-brand-700 dark:text-brand-400 font-bold text-xs uppercase tracking-widest">Get In Touch</span>
+    <h2 class="font-serif text-3xl sm:text-5xl font-bold mt-2 text-stone-900 dark:text-white">We'd Love To Hear From You</h2>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+    <form id="contactForm" class="lg:col-span-7 p-8 rounded-3xl glass-panel shadow-xl border border-stone-200 dark:border-slate-800 space-y-4" novalidate>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Full Name</label>
+          <input id="cName" type="text" class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+          <small class="text-red-500 text-xs hidden"></small>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Email Address</label>
+          <input id="cEmail" type="email" class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+          <small class="text-red-500 text-xs hidden"></small>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Mobile Phone</label>
+        <input id="cPhone" type="tel" placeholder="10-digit phone number" class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none">
+        <small class="text-red-500 text-xs hidden"></small>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">Your Message</label>
+        <textarea id="cMsg" rows="4" class="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-stone-900 dark:text-stone-100 text-sm focus:ring-2 focus:ring-brand-600 focus:outline-none"></textarea>
+        <small class="text-red-500 text-xs hidden"></small>
+      </div>
+      <button type="submit" class="w-full py-4 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl text-sm transition-all shadow-lg active:scale-95">Send Message</button>
+      <p id="formMsg" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 text-center"></p>
+    </form>
+
+    <div class="lg:col-span-5 space-y-6">
+      <div class="p-6 rounded-3xl glass-panel border border-stone-200 dark:border-slate-800 space-y-4 text-sm">
+        <div class="flex items-start gap-3">
+          <span class="text-2xl">✉️</span>
+          <div>
+            <h4 class="font-bold text-stone-900 dark:text-stone-100">Email Us</h4>
+            <a href="mailto:hello@puredairy.example" class="text-stone-600 dark:text-slate-400 hover:text-brand-600">hello@puredairy.example</a>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-2xl">📞</span>
+          <div>
+            <h4 class="font-bold text-stone-900 dark:text-stone-100">Helpline / WhatsApp</h4>
+            <a href="tel:+911610000000" class="text-stone-600 dark:text-slate-400 hover:text-brand-600">+91 161 000 0000</a>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-2xl">📍</span>
+          <div>
+            <h4 class="font-bold text-stone-900 dark:text-stone-100">Farm Location</h4>
+            <p class="text-stone-600 dark:text-slate-400">Pure Dairy Farms, Ferozepur Road, Ludhiana, Punjab 141001</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map iFrame -->
+      <div class="rounded-3xl overflow-hidden border border-stone-200 dark:border-slate-800 h-64 shadow-lg">
+        <iframe title="Pure Dairy location" loading="lazy" class="w-full h-full border-0" src="https://www.google.com/maps?q=Ferozepur+Road,+Ludhiana,+Punjab&output=embed"></iframe>
       </div>
     </div>
   </div>
 </section>
 </main>
 
-<!-- Footer -->
-<footer>
-  <div class="container foot">
-    <div><a href="#home" class="logo">Pure<span>Dairy</span></a><p>Farm-fresh dairy, delivered daily.</p>
-      <div class="social"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="Instagram">ig</a><a href="#" aria-label="X">𝕏</a><a href="#" aria-label="YouTube">▶</a></div></div>
-    <div><h4>Quick links</h4><a href="#home">Home</a><a href="#products">Products</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></div>
-    <div><h4>Categories</h4><div id="footCats"></div></div>
+<footer class="bg-stone-900 text-stone-300 pt-16 pb-8 border-t border-stone-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+    <div class="space-y-4">
+      <a href="#home" class="flex items-center gap-2">
+        <span class="font-serif font-bold text-2xl text-white">Pure<span class="text-amber-500">Dairy</span></span>
+      </a>
+      <p class="text-xs text-stone-400 leading-relaxed">Farm-fresh milk, paneer, and organic dairy products delivered straight from Punjab pastures to your kitchen table.</p>
+      <div class="flex space-x-3 text-lg">
+        <a href="#" class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center hover:bg-brand-600 text-white transition-colors">f</a>
+        <a href="#" class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center hover:bg-brand-600 text-white transition-colors">ig</a>
+        <a href="#" class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center hover:bg-brand-600 text-white transition-colors">𝕏</a>
+        <a href="#" class="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center hover:bg-brand-600 text-white transition-colors">▶</a>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="text-white font-bold text-sm mb-4">Quick Links</h4>
+      <ul class="space-y-2 text-xs">
+        <li><a href="#home" class="hover:text-amber-400 transition-colors">Home</a></li>
+        <li><a href="#products" class="hover:text-amber-400 transition-colors">Our Products</a></li>
+        <li><a href="#about" class="hover:text-amber-400 transition-colors">Our Story</a></li>
+        <li><a href="#faq" class="hover:text-amber-400 transition-colors">FAQs</a></li>
+        <li><a href="#contact" class="hover:text-amber-400 transition-colors">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-white font-bold text-sm mb-4">Categories</h4>
+      <div id="footCats" class="flex flex-col space-y-2 text-xs text-stone-400">
+        <!-- JS filled -->
+      </div>
+    </div>
+
+    <div>
+      <h4 class="text-white font-bold text-sm mb-4">Fresh Hours</h4>
+      <p class="text-xs text-stone-400">Doorstep Delivery: 5:30 AM - 8:00 AM</p>
+      <p class="text-xs text-stone-400 mt-2">Farm Store Open: 8:00 AM - 8:00 PM</p>
+      <div class="mt-4 p-3 rounded-xl bg-stone-800 border border-stone-700 text-xs text-amber-400 font-semibold">
+        🔒 100% Satisfaction Guarantee
+      </div>
+    </div>
   </div>
-  <p class="copy">© <span id="year"></span> Pure Dairy. All rights reserved.</p>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-stone-800 pt-6 text-center text-xs text-stone-500">
+    © <span id="year"></span> Pure Dairy Punjab. All rights reserved.
+  </div>
 </footer>
 
-<!-- Cart sidebar -->
-<div id="overlay"></div>
-<aside id="cart" aria-label="Shopping cart">
-  <div class="cart-head"><h3>Your cart</h3><button id="closeCart" class="icon-btn" aria-label="Close cart">✕</button></div>
-  <div id="cartItems"></div>
-  <div class="cart-foot">
-    <p><span>Subtotal</span><b id="subtotal">₹0.00</b></p>
-    <p><span>GST (5%)</span><b id="tax">₹0.00</b></p>
-    <p class="total"><span>Total</span><b id="total">₹0.00</b></p>
-    <button id="checkout" class="btn primary block">Checkout</button>
+<!-- Overlay -->
+<div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity duration-300"></div>
+
+<!-- Slide-out Cart Drawer -->
+<aside id="cart" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-cream-100 dark:bg-slate-900 z-50 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col border-l border-stone-200 dark:border-slate-800">
+  <div class="p-5 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between bg-white dark:bg-slate-800">
+    <h3 class="font-serif font-bold text-xl text-stone-900 dark:text-stone-100">Your Shopping Cart</h3>
+    <button id="closeCart" class="p-2 rounded-xl hover:bg-stone-100 dark:hover:bg-slate-700 text-stone-500 dark:text-stone-300 text-lg">✕</button>
+  </div>
+
+  <!-- Free shipping meter -->
+  <div class="p-4 bg-brand-50 dark:bg-slate-800/80 border-b border-brand-100 dark:border-slate-700">
+    <div class="flex justify-between text-xs font-bold mb-1">
+      <span id="freeDeliveryText" class="text-brand-800 dark:text-brand-300">Add ₹200 more for Free Delivery</span>
+      <span id="freeDeliveryPercent" class="text-brand-700 dark:text-brand-400">0%</span>
+    </div>
+    <div class="w-full bg-stone-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+      <div id="freeDeliveryBar" class="bg-brand-600 h-full w-0 transition-all duration-300"></div>
+    </div>
+  </div>
+
+  <!-- Cart Items Scrollable -->
+  <div id="cartItems" class="flex-1 overflow-y-auto p-4 space-y-4 divide-y divide-stone-200/50 dark:divide-slate-800">
+    <!-- Populated by JS -->
+  </div>
+
+  <div class="p-5 border-t border-stone-200 dark:border-slate-800 bg-white dark:bg-slate-800 space-y-3">
+    <div class="flex justify-between text-sm text-stone-600 dark:text-slate-400">
+      <span>Subtotal</span>
+      <b id="subtotal" class="text-stone-900 dark:text-stone-100">₹0.00</b>
+    </div>
+    <div class="flex justify-between text-sm text-stone-600 dark:text-slate-400">
+      <span>GST (5%)</span>
+      <b id="tax" class="text-stone-900 dark:text-stone-100">₹0.00</b>
+    </div>
+    <div class="flex justify-between text-base font-bold pt-2 border-t border-stone-200 dark:border-slate-700 text-stone-900 dark:text-white">
+      <span>Total</span>
+      <b id="total" class="text-brand-700 dark:text-brand-400 text-xl">₹0.00</b>
+    </div>
+    <button id="checkout" class="w-full py-3.5 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 text-sm">
+      Proceed to Checkout
+    </button>
   </div>
 </aside>
 
-<div id="toast" role="status"></div>
-<button id="toTop" aria-label="Scroll to top">↑</button>
-<script src="script.js"></script>
+<!-- Product Lightbox Modal -->
+<div id="productModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm modal-close-btn"></div>
+  <div class="relative bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 overflow-hidden shadow-2xl z-10 border border-stone-200 dark:border-slate-800 animate-fade-in">
+    <button id="closeModal" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-stone-100 dark:bg-slate-800 text-stone-600 dark:text-stone-300 font-bold flex items-center justify-center hover:bg-stone-200">✕</button>
+    <div id="modalContent" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+      <!-- Injected dynamically by script.js -->
+    </div>
+  </div>
+</div>
+
+<!-- Floating Toast Container -->
+<div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-stone-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-semibold border border-stone-700"></div>
+
+<!-- Back to top button -->
+<button id="toTop" class="fixed bottom-6 left-6 z-40 p-3.5 rounded-full bg-brand-800 text-white shadow-xl opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 active:scale-95" aria-label="Scroll to top">↑</button>
+
+<script>
+const state = {
+  cart: [],
+  darkMode: false,
+  activeCategory: 'All',
+  products: [
+    {
+      id: 1,
+      name: "Fresh Cow Milk (A2 Whole)",
+      category: "Milk",
+      price: 68,
+      rating: 4.9,
+      reviews: 320,
+      badge: "Best Seller",
+      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80",
+      desc: "Pure raw-pasteurized A2 cow milk delivered within 6 hours of milking. Rich in nutrient density and natural probiotics."
+    },
+    {
+      id: 2,
+      name: "Full Cream Buffalo Milk",
+      category: "Milk",
+      price: 78,
+      rating: 4.8,
+      reviews: 210,
+      badge: "High Fat 7.5%",
+      image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=800&q=80",
+      desc: "Thick, creamy buffalo milk sourced from healthy Murrah buffaloes. Perfect for homemade curd, kheer, and tea."
+    },
+    {
+      id: 3,
+      name: "Farm Fresh Natural Dahi",
+      category: "Curd & Yogurt",
+      price: 45,
+      rating: 4.9,
+      reviews: 180,
+      badge: "Probiotic",
+      image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=80",
+      desc: "Set in traditional earthen pots for authentic flavor and dense texture. 100% natural live cultures."
+    },
+    {
+      id: 4,
+      name: "Organic Malai Paneer",
+      category: "Paneer & Cottage Cheese",
+      price: 120,
+      rating: 5.0,
+      reviews: 450,
+      badge: "Ultra Soft",
+      image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=800&q=80",
+      desc: "Hand-pressed cottage cheese made with pure whole milk and fresh lemon juice. Super tender texture."
+    },
+    {
+      id: 5,
+      name: "Traditional Desi Cow Ghee",
+      category: "Ghee & Clarified Butter",
+      price: 650,
+      rating: 4.9,
+      reviews: 580,
+      badge: "Bilona Method",
+      image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=800&q=80",
+      desc: "Golden bilona ghee churned from curd rather than cream. Distinct aroma and high smoke point."
+    },
+    {
+      id: 6,
+      name: "Cultured White Butter (Makhan)",
+      category: "Butter & Spreads",
+      price: 110,
+      rating: 4.8,
+      reviews: 140,
+      badge: "Unsalted",
+      image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=800&q=80",
+      desc: "Authentic Punjabi white butter. Pure churned cream with no added colors or chemical preservatives."
+    },
+    {
+      id: 7,
+      name: "Artisanal Sharp Cheddar",
+      category: "Cheese",
+      price: 240,
+      rating: 4.7,
+      reviews: 95,
+      badge: "Aged 6 Months",
+      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=800&q=80",
+      desc: "Slow-aged block cheese crafted on-farm using traditional cheddar recipes and pure cow milk."
+    },
+    {
+      id: 8,
+      name: "Thick Fresh Rabri & Cream",
+      category: "Fresh Cream & Rabri",
+      price: 160,
+      rating: 4.9,
+      reviews: 115,
+      badge: "Rich & Sweet",
+      image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80",
+      desc: "Slow-boiled full cream milk reduced with cardamom and saffron pistachios for rich dessert toppings."
+    },
+    {
+      id: 9,
+      name: "Gourmet Dark Chocolate Ice Cream",
+      category: "Ice Cream & Desserts",
+      price: 180,
+      rating: 4.9,
+      reviews: 310,
+      badge: "100% Cream",
+      image: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=800&q=80",
+      desc: "Crafted with pure whole cream, Belgian cocoa powder, and zero artificial vegetable fats."
+    }
+  ],
+  categories: [
+    { name: "Milk", image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=500&q=80", count: "3 Varieties" },
+    { name: "Curd & Yogurt", image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=500&q=80", count: "Natural & Flavored" },
+    { name: "Paneer & Cottage Cheese", image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=500&q=80", count: "Fresh Daily" },
+    { name: "Butter & Spreads", image: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=500&q=80", count: "Salted & White" },
+    { name: "Ghee & Clarified Butter", image: "https://images.unsplash.com/photo-1608686207856-001b95cf60ca?auto=format&fit=crop&w=500&q=80", count: "A2 Bilona Ghee" },
+    { name: "Cheese", image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=500&q=80", count: "Mozzarella & Cheddar" },
+    { name: "Fresh Cream & Rabri", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=500&q=80", count: "Malai & Dessert Cream" },
+    { name: "Ice Cream & Desserts", image: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=500&q=80", count: "100% Pure Milk Ice Cream" }
+  ],
+  whyUs: [
+    { icon: "🧪", title: "Lab Tested Morning & Evening", desc: "Every batch is tested for zero adulteration, synthetic fats, or antibiotics." },
+    { icon: "❄️", title: "4°C Cold-Chain Delivery", desc: "Insulated morning transport ensures doorstep delivery at farm-gate cold temperatures." },
+    { icon: "🌱", title: "100% Organic Pasture Fed", desc: "Cows graze freely on green organic clover fodder raised on our family farms." },
+    { icon: "⚡", title: "Flexible Subscriptions", desc: "Pause, resume, or edit your morning delivery order via instant WhatsApp notifications." }
+  ],
+  testimonials: [
+    { name: "Simran Kaur", location: "Model Town, Ludhiana", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80", comment: "The quality of A2 Milk is outstanding! You can see the thick natural malai layer when you boil it. Essential for my kids." },
+    { name: "Rajesh Sharma", location: "Sarabha Nagar, Ludhiana", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80", comment: "Their Bilona Ghee smells exactly like the ghee my grandmother used to churn on the village farm. Unmatched authentic purity!" },
+    { name: "Priya Malhotra", location: "Civil Lines, Ludhiana", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80", comment: "Super soft paneer! It melts in your mouth and doesn't get rubbery when cooked in curry. Highly recommended." }
+  ],
+  faqs: [
+    { q: "When will my daily milk order be delivered?", a: "Daily morning orders are delivered right to your doorstep between 5:30 AM and 7:30 AM every morning." },
+    { q: "Are your milk bottles pasteurized or raw?", a: "Our milk undergoes gentle low-temperature pasteurization to eliminate harmful pathogens while retaining maximum vitamins and natural enzyme integrity." },
+    { q: "How do I pause my daily subscription while traveling?", a: "You can pause or alter subscription deliveries up to 10:00 PM the night before via our customer hotline or online profile." },
+    { q: "Is there any delivery fee?", a: "Deliveries over ₹200 receive free shipping. Standard morning doorstep delivery fee is ₹20 for smaller orders." }
+  ]
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Hide Loader after DOM setup
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    loader.classList.add("opacity-0");
+    setTimeout(() => loader.remove(), 500);
+  }, 600);
+
+  // Set Year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  renderCategories();
+  renderFilterOptions();
+  renderProducts();
+  renderWhyUs();
+  renderTestimonials();
+  renderFaqs();
+  renderFooterCategories();
+  setupEventListeners();
+  updateCart();
+});
+
+function renderCategories() {
+  const grid = document.getElementById("categoryGrid");
+  grid.innerHTML = state.categories.map(cat => `
+    <div onclick="filterByCategory('${cat.name}')" class="group relative rounded-2xl overflow-hidden cursor-pointer shadow-md h-52 img-zoom-wrapper border border-stone-200 dark:border-slate-800">
+      <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/20 to-transparent"></div>
+      <div class="absolute bottom-4 left-4 right-4 text-white">
+        <h3 class="font-serif font-bold text-lg leading-snug group-hover:text-amber-300 transition-colors">${cat.name}</h3>
+        <p class="text-xs text-stone-300">${cat.count}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFilterOptions() {
+  const filter = document.getElementById("filter");
+  const options = ['All', ...state.categories.map(c => c.name)];
+  filter.innerHTML = options.map(opt => `<option value="${opt}">Category: ${opt}</option>`).join('');
+}
+
+function filterByCategory(catName) {
+  state.activeCategory = catName;
+  document.getElementById("filter").value = catName;
+  renderProducts();
+  document.getElementById("products").scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderProducts() {
+  const grid = document.getElementById("productGrid");
+  const noResults = document.getElementById("noResults");
+  
+  const search = document.getElementById("search").value.toLowerCase();
+  const filterCat = document.getElementById("filter").value;
+  const sortVal = document.getElementById("sort").value;
+
+  let filtered = state.products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
+    const matchesCat = filterCat === 'All' || p.category === filterCat;
+    return matchesSearch && matchesCat;
+  });
+
+  if (sortVal === 'low') filtered.sort((a,b) => a.price - b.price);
+  else if (sortVal === 'high') filtered.sort((a,b) => b.price - a.price);
+  else if (sortVal === 'rating') filtered.sort((a,b) => b.rating - a.rating);
+  else if (sortVal === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    noResults.classList.remove('hidden');
+    return;
+  }
+
+  noResults.classList.add('hidden');
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card rounded-3xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col justify-between">
+      <div>
+        <div class="relative h-48 img-zoom-wrapper cursor-pointer" onclick="openProductModal(${p.id})">
+          <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+          <span class="absolute top-3 left-3 bg-brand-800 text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow">
+            ${p.badge}
+          </span>
+          <button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md flex items-center justify-center text-xs shadow hover:scale-110">
+            🔍
+          </button>
+        </div>
+
+        <div class="p-5">
+          <div class="flex items-center gap-1 text-amber-500 text-xs font-bold mb-1">
+            <span>★ ${p.rating}</span>
+            <span class="text-stone-400">(${p.reviews})</span>
+          </div>
+          <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100 cursor-pointer hover:text-brand-700" onclick="openProductModal(${p.id})">${p.name}</h3>
+          <p class="text-xs text-stone-500 dark:text-slate-400 mt-1 line-clamp-2">${p.desc}</p>
+        </div>
+      </div>
+
+      <div class="p-5 pt-0 flex items-center justify-between">
+        <div>
+          <span class="text-xs text-stone-400 block">Price</span>
+          <span class="text-xl font-bold text-stone-900 dark:text-white">₹${p.price}</span>
+        </div>
+        <button onclick="addToCart(${p.id})" class="px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs font-bold transition-all shadow active:scale-95 flex items-center gap-1">
+          <span>+ Add</span>
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function resetFilters() {
+  document.getElementById("search").value = '';
+  document.getElementById("filter").value = 'All';
+  document.getElementById("sort").value = 'default';
+  renderProducts();
+}
+
+function renderWhyUs() {
+  const grid = document.getElementById("whyGrid");
+  grid.innerHTML = state.whyUs.map(item => `
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-brand-50 dark:bg-slate-800 flex items-center justify-center text-2xl">${item.icon}</div>
+      <h3 class="font-serif font-bold text-lg text-stone-900 dark:text-stone-100">${item.title}</h3>
+      <p class="text-xs text-stone-500 dark:text-slate-400 leading-relaxed">${item.desc}</p>
+    </div>
+  `).join('');
+}
+
+function renderTestimonials() {
+  const grid = document.getElementById("testiGrid");
+  grid.innerHTML = state.testimonials.map(item => `
+    <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-4 flex flex-col justify-between">
+      <p class="text-xs sm:text-sm text-stone-600 dark:text-slate-300 italic leading-relaxed">"${item.comment}"</p>
+      <div class="flex items-center gap-3 pt-2 border-t border-stone-100 dark:border-slate-800">
+        <img src="${item.avatar}" alt="${item.name}" class="w-10 h-10 rounded-full object-cover">
+        <div>
+          <h4 class="font-bold text-xs text-stone-900 dark:text-stone-100">${item.name}</h4>
+          <span class="text-[10px] text-stone-400">${item.location}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFaqs() {
+  const list = document.getElementById("faqList");
+  list.innerHTML = state.faqs.map((faq, index) => `
+    <div class="rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 overflow-hidden shadow-sm">
+      <button onclick="toggleFaq(${index})" class="w-full p-5 text-left flex items-center justify-between font-bold text-sm text-stone-800 dark:text-stone-200">
+        <span>${faq.q}</span>
+        <span id="faqIcon-${index}" class="text-brand-700 text-lg">＋</span>
+      </button>
+      <div id="faqAns-${index}" class="hidden p-5 pt-0 text-xs text-stone-500 dark:text-slate-400 leading-relaxed border-t border-stone-100 dark:border-slate-800">
+        ${faq.a}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFaq(index) {
+  const ans = document.getElementById(`faqAns-${index}`);
+  const icon = document.getElementById(`faqIcon-${index}`);
+  const isHidden = ans.classList.contains('hidden');
+  
+  if (isHidden) {
+    ans.classList.remove('hidden');
+    icon.textContent = '－';
+  } else {
+    ans.classList.add('hidden');
+    icon.textContent = '＋';
+  }
+}
+
+function renderFooterCategories() {
+  const foot = document.getElementById("footCats");
+  foot.innerHTML = state.categories.map(c => `
+    <a href="#products" onclick="filterByCategory('${c.name}')" class="hover:text-amber-400 transition-colors">${c.name}</a>
+  `).join('');
+}
+
+function addToCart(productId) {
+  const prod = state.products.find(p => p.id === productId);
+  const existing = state.cart.find(item => item.id === productId);
+
+  if (existing) {
+    existing.qty += 1;
+  } else {
+    state.cart.push({ ...prod, qty: 1 });
+  }
+
+  updateCart();
+  showToast(`Added "${prod.name}" to cart!`);
+}
+
+function updateCart() {
+  const cartCount = document.getElementById("cartCount");
+  const cartItems = document.getElementById("cartItems");
+  const subtotalEl = document.getElementById("subtotal");
+  const taxEl = document.getElementById("tax");
+  const totalEl = document.getElementById("total");
+
+  const totalItems = state.cart.reduce((sum, i) => sum + i.qty, 0);
+  cartCount.textContent = totalItems;
+
+  if (state.cart.length === 0) {
+    cartItems.innerHTML = `
+      <div class="text-center py-12 text-stone-400">
+        <span class="text-4xl block mb-2">🛒</span>
+        <p class="text-sm font-medium">Your shopping cart is empty</p>
+      </div>
+    `;
+  } else {
+    cartItems.innerHTML = state.cart.map(item => `
+      <div class="flex items-center gap-3 pt-3">
+        <img src="${item.image}" alt="${item.name}" class="w-14 h-14 rounded-xl object-cover">
+        <div class="flex-1 min-w-0">
+          <h4 class="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">${item.name}</h4>
+          <span class="text-xs font-bold text-brand-700 dark:text-brand-400">₹${item.price}</span>
+          <div class="flex items-center gap-2 mt-1">
+            <button onclick="changeQty(${item.id}, -1)" class="w-5 h-5 rounded bg-stone-200 dark:bg-slate-700 text-xs font-bold">-</button>
+            <span class="text-xs font-bold">${item.qty}</span>
+            <button onclick="changeQty(${item.id}, 1)" class="w-5 h-5 rounded bg-stone-200 dark:bg-slate-700 text-xs font-bold">+</button>
+          </div>
+        </div>
+        <button onclick="removeFromCart(${item.id})" class="text-stone-400 hover:text-red-500 text-sm">✕</button>
+      </div>
+    `).join('');
+  }
+
+  const subtotal = state.cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const tax = subtotal * 0.05;
+  const total = subtotal + tax;
+
+  subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+  taxEl.textContent = `₹${tax.toFixed(2)}`;
+  totalEl.textContent = `₹${total.toFixed(2)}`;
+
+  // Free delivery progress bar
+  const freeThreshold = 200;
+  const freeBar = document.getElementById("freeDeliveryBar");
+  const freeText = document.getElementById("freeDeliveryText");
+  const freePercent = document.getElementById("freeDeliveryPercent");
+
+  if (subtotal >= freeThreshold) {
+    freeBar.style.width = '100%';
+    freeText.textContent = "🎉 You unlocked FREE Delivery!";
+    freePercent.textContent = "100%";
+  } else {
+    const pct = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
+    freeBar.style.width = `${pct}%`;
+    freeText.textContent = `Add ₹${(freeThreshold - subtotal).toFixed(0)} more for Free Delivery`;
+    freePercent.textContent = `${pct}%`;
+  }
+}
+
+function changeQty(id, delta) {
+  const item = state.cart.find(i => i.id === id);
+  if (item) {
+    item.qty += delta;
+    if (item.qty <= 0) {
+      removeFromCart(id);
+    } else {
+      updateCart();
+    }
+  }
+}
+
+function removeFromCart(id) {
+  state.cart = state.cart.filter(i => i.id !== id);
+  updateCart();
+  showToast("Item removed from cart");
+}
+
+function openProductModal(id) {
+  const p = state.products.find(item => item.id === id);
+  const modal = document.getElementById("productModal");
+  const modalContent = document.getElementById("modalContent");
+
+  modalContent.innerHTML = `
+    <div class="h-64 md:h-80 rounded-2xl overflow-hidden">
+      <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+    </div>
+    <div class="space-y-4">
+      <span class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-slate-800 px-2.5 py-1 rounded-full">${p.badge}</span>
+      <h3 class="font-serif font-bold text-2xl text-stone-900 dark:text-stone-100">${p.name}</h3>
+      <p class="text-xs text-stone-500 dark:text-slate-400 leading-relaxed">${p.desc}</p>
+      <div class="flex items-center gap-2 text-sm text-amber-500 font-bold">
+        <span>★ ${p.rating}</span>
+        <span class="text-stone-400">(${p.reviews} customer reviews)</span>
+      </div>
+      <div class="flex items-center justify-between pt-4 border-t border-stone-200 dark:border-slate-800">
+        <span class="text-2xl font-bold text-stone-900 dark:text-white">₹${p.price}</span>
+        <button onclick="addToCart(${p.id}); closeModal();" class="px-6 py-3 bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm rounded-xl shadow-lg active:scale-95">
+          Add To Cart
+        </button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById("productModal").classList.add('hidden');
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.innerHTML = `<span>🥛</span> <span>${msg}</span>`;
+  toast.classList.remove('translate-y-20', 'opacity-0');
+  
+  setTimeout(() => {
+    toast.classList.add('translate-y-20', 'opacity-0');
+  }, 3000);
+}
+
+function setupEventListeners() {
+  // Theme Toggle
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle.addEventListener("click", () => {
+    state.darkMode = !state.darkMode;
+    document.documentElement.classList.toggle("dark", state.darkMode);
+    document.getElementById("themeIcon").textContent = state.darkMode ? "☀️" : "🌙";
+  });
+
+  // Mobile Menu Toggle
+  const burger = document.getElementById("burger");
+  const mobileMenu = document.getElementById("mobileMenu");
+  burger.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  document.querySelectorAll(".mobile-link").forEach(link => {
+    link.addEventListener("click", () => mobileMenu.classList.add("hidden"));
+  });
+
+  // Search & Filter listeners
+  document.getElementById("search").addEventListener("input", renderProducts);
+  document.getElementById("filter").addEventListener("change", renderProducts);
+  document.getElementById("sort").addEventListener("change", renderProducts);
+
+  // Cart Drawer open/close
+  const cartBtn = document.getElementById("cartBtn");
+  const closeCart = document.getElementById("closeCart");
+  const overlay = document.getElementById("overlay");
+  const cartDrawer = document.getElementById("cart");
+
+  const openCartFn = () => {
+    cartDrawer.classList.remove("translate-x-full");
+    overlay.classList.remove("hidden");
+  };
+
+  const closeCartFn = () => {
+    cartDrawer.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+  };
+
+  cartBtn.addEventListener("click", openCartFn);
+  closeCart.addEventListener("click", closeCartFn);
+  overlay.addEventListener("click", () => {
+    closeCartFn();
+    closeModal();
+  });
+
+  // Modal Close
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+
+  // Checkout simulation
+  document.getElementById("checkout").addEventListener("click", () => {
+    if (state.cart.length === 0) {
+      showToast("Your cart is currently empty!");
+      return;
+    }
+    showToast("🎉 Order placed! Your morning slot is confirmed.");
+    state.cart = [];
+    updateCart();
+    closeCartFn();
+  });
+
+  // Back to top & Navbar scroll behavior
+  const toTop = document.getElementById("toTop");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) {
+      toTop.classList.remove("opacity-0", "pointer-events-none");
+    } else {
+      toTop.classList.add("opacity-0", "pointer-events-none");
+    }
+  });
+
+  toTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Newsletter Submit
+  document.getElementById("newsForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("newsEmail").value;
+    const msg = document.getElementById("newsMsg");
+    if (email) {
+      msg.textContent = "✓ Thanks for subscribing! Check your inbox for your 15% promo code.";
+      document.getElementById("newsEmail").value = "";
+    }
+  });
+
+  // Contact Form Submit & Validation
+  document.getElementById("contactForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("cName").value.trim();
+    const email = document.getElementById("cEmail").value.trim();
+    const phone = document.getElementById("cPhone").value.trim();
+    const msg = document.getElementById("cMsg").value.trim();
+    const formMsg = document.getElementById("formMsg");
+
+    if (!name || !email || !phone || !msg) {
+      formMsg.textContent = "Please fill in all fields before sending.";
+      formMsg.className = "text-xs font-bold text-red-500 text-center";
+      return;
+    }
+
+    formMsg.textContent = "✓ Thank you! Our farm team will call you back within 2 hours.";
+    formMsg.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 text-center";
+    document.getElementById("contactForm").reset();
+  });
+}
+</script>
 </body>
 </html>
