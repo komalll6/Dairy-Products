@@ -1,259 +1,405 @@
-/* ==========================================================
-   Pure Dairy – script.js
-   Data, rendering, cart, search/filter/sort, UI behaviours
-   ========================================================== */
-'use strict';
-
-/* ---------- Helpers ---------- */
-const $ = (s, el = document) => el.querySelector(s);
-const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const money = n => '₹' + n.toFixed(2);
-const TAX_RATE = 0.05;
-// Free keyword-based dairy photos; if an image fails, the gradient behind it shows.
-const img = (kw, lock, w = 500, h = 380) => `https://loremflickr.com/${w}/${h}/${kw}?lock=${lock}`;
-const imgTag = (src, alt) => `<img src="${src}" alt="${alt}" loading="lazy" onerror="this.style.display='none'">`;
-const store = {
-  get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage unavailable */ } }
-};
-
-/* ---------- Data ---------- */
-const CATEGORIES = [
-  { name: 'Milk', kw: 'milk,glass' }, { name: 'Curd', kw: 'curd,yogurt,bowl' },
-  { name: 'Paneer', kw: 'paneer,cheese' }, { name: 'Butter', kw: 'butter' },
-  { name: 'Cheese', kw: 'cheese' }, { name: 'Ghee', kw: 'ghee,butter,jar' },
-  { name: 'Yogurt', kw: 'yogurt,fruit' }, { name: 'Ice Cream', kw: 'icecream' }
+// Database of Products including Ghee Variants
+const products = [
+  {
+    id: "ghee-a2",
+    name: "A2 Vedic Bilona Desi Cow Ghee",
+    category: "ghee",
+    price: 850,
+    rating: 5.0,
+    img: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=600&q=80",
+    desc: "Hand-churned from organic A2 cow curd using traditional earthen pots in Jalandhar Cantt."
+  },
+  {
+    id: "ghee-cow",
+    name: "Pure Desi Cow Ghee",
+    category: "ghee",
+    price: 650,
+    rating: 4.8,
+    img: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=600&q=80",
+    desc: "Rich golden ghee made from pure cow milk, packed with natural rich flavor and essential fats."
+  },
+  {
+    id: "ghee-buffalo",
+    name: "Traditional Buffalo Ghee",
+    category: "ghee",
+    price: 700,
+    rating: 4.7,
+    img: "https://images.unsplash.com/photo-1628088062854-d1870b4553da?auto=format&fit=crop&w=600&q=80",
+    desc: "Creamy white ghee ideal for sweets, high heat cooking, and daily energy."
+  },
+  {
+    id: "milk-full",
+    name: "Farm Fresh Whole Milk",
+    category: "milk",
+    price: 66,
+    rating: 4.9,
+    img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=600&q=80",
+    desc: "Pure pasteurized whole cow milk delivered before 6 AM daily."
+  },
+  {
+    id: "paneer-fresh",
+    name: "Soft Malai Paneer",
+    category: "paneer",
+    price: 120,
+    rating: 4.9,
+    img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80",
+    desc: "Fresh, extra soft cottage cheese made every morning."
+  },
+  {
+    id: "butter-yellow",
+    name: "Cultured White Butter (Makhan)",
+    category: "butter",
+    price: 90,
+    rating: 4.8,
+    img: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=600&q=80",
+    desc: "Traditional unsalted white butter hand-churned from fresh cream."
+  },
+  {
+    id: "curd-dahi",
+    name: "Thick Natural Dahi (Curd)",
+    category: "curd",
+    price: 45,
+    rating: 4.7,
+    img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80",
+    desc: "Set curd with balanced mild tartness and thick probiotic texture."
+  },
+  {
+    id: "icecream-vanilla",
+    name: "Real Milk Vanilla Ice Cream",
+    category: "icecream",
+    price: 150,
+    rating: 4.9,
+    img: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=600&q=80",
+    desc: "Rich ice cream churned using pure whole cream and real vanilla beans."
+  }
 ];
 
-const PRODUCTS = [
-  { id: 1, name: 'Full Cream Milk 1L', cat: 'Milk', price: 68, rating: 4.8, reviews: 412, desc: 'Rich, creamy milk with 6% fat, bottled the morning it is milked.', kw: 'milk,bottle' },
-  { id: 2, name: 'Toned Milk 500ml', cat: 'Milk', price: 30, rating: 4.5, reviews: 268, desc: 'Light everyday milk for tea, coffee and cereal.', kw: 'milk,glass' },
-  { id: 3, name: 'Fresh Set Curd 400g', cat: 'Curd', price: 45, rating: 4.7, reviews: 305, desc: 'Thick, mildly tangy curd set naturally in earthen-style cups.', kw: 'curd,bowl' },
-  { id: 4, name: 'Probiotic Dahi 1kg', cat: 'Curd', price: 92, rating: 4.6, reviews: 190, desc: 'Live cultures for gut health, perfect for raita and lassi.', kw: 'yogurt,bowl' },
-  { id: 5, name: 'Soft Malai Paneer 200g', cat: 'Paneer', price: 85, rating: 4.9, reviews: 521, desc: 'Melt-in-mouth paneer, made fresh every day, no additives.', kw: 'paneer' },
-  { id: 6, name: 'Cubed Paneer Block 500g', cat: 'Paneer', price: 195, rating: 4.6, reviews: 143, desc: 'Firm, high-protein paneer that holds its shape in curries.', kw: 'cottage,cheese' },
-  { id: 7, name: 'Salted Table Butter 100g', cat: 'Butter', price: 58, rating: 4.7, reviews: 376, desc: 'Churned from fresh cream, golden and lightly salted.', kw: 'butter,toast' },
-  { id: 8, name: 'Unsalted Butter 500g', cat: 'Butter', price: 265, rating: 4.4, reviews: 98, desc: 'Baker-favourite butter with clean, sweet cream flavour.', kw: 'butter,block' },
-  { id: 9, name: 'Mozzarella Cheese 200g', cat: 'Cheese', price: 140, rating: 4.8, reviews: 289, desc: 'Stretchy, milky mozzarella made for pizza and pasta.', kw: 'mozzarella' },
-  { id: 10, name: 'Aged Cheddar 200g', cat: 'Cheese', price: 210, rating: 4.5, reviews: 117, desc: 'Sharp, nutty cheddar matured for six months.', kw: 'cheddar' },
-  { id: 11, name: 'Pure Desi Cow Ghee 500ml', cat: 'Ghee', price: 425, rating: 4.9, reviews: 640, desc: 'Slow-cooked bilona ghee with a granular texture and warm aroma.', kw: 'ghee,jar' },
-  { id: 12, name: 'Buffalo Ghee 1L', cat: 'Ghee', price: 760, rating: 4.6, reviews: 205, desc: 'Rich, creamy ghee for parathas, sweets and tempering.', kw: 'clarified,butter' },
-  { id: 13, name: 'Strawberry Yogurt 100g', cat: 'Yogurt', price: 30, rating: 4.7, reviews: 332, desc: 'Creamy yogurt swirled with real strawberry pulp.', kw: 'strawberry,yogurt' },
-  { id: 14, name: 'Greek Yogurt 200g', cat: 'Yogurt', price: 70, rating: 4.8, reviews: 254, desc: 'Strained, protein-packed and free from added sugar.', kw: 'greek,yogurt' },
-  { id: 15, name: 'Vanilla Bean Ice Cream 500ml', cat: 'Ice Cream', price: 220, rating: 4.7, reviews: 301, desc: 'Classic vanilla flecked with real vanilla beans.', kw: 'vanilla,icecream' },
-  { id: 16, name: 'Kesar Pista Kulfi 4-pack', cat: 'Ice Cream', price: 180, rating: 4.9, reviews: 187, desc: 'Traditional kulfi with saffron and crushed pistachios.', kw: 'kulfi,dessert' }
-];
-PRODUCTS.forEach(p => p.image = img(p.kw, p.id + 20));
-
-const WHY = [
-  ['🥛', '100% Fresh Products', 'Milked at dawn, processed within hours, never stored for days.'],
-  ['🚜', 'Farm to Home Delivery', 'No middlemen. Our own cold-chain vans bring it from farm to your door.'],
-  ['🔬', 'Quality Tested', 'Every batch passes 27 lab checks for purity and safety.'],
-  ['🌱', 'Organic Feed', 'Our cows eat pesticide-free fodder and graze on open pasture.'],
-  ['⚡', 'Fast Delivery', 'Choose a morning or evening slot, delivered in under 60 minutes on demand.'],
-  ['💰', 'Affordable Prices', 'Farm-direct pricing keeps premium dairy within everyday budgets.']
+// Categories
+const categories = [
+  { id: "all", name: "All Products" },
+  { id: "ghee", name: "Desi Ghee", img: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&w=400&q=80" },
+  { id: "milk", name: "Fresh Milk", img: "https://images.unsplash.com/photo-1563636619-e9143da7973b?auto=format&fit=crop&w=400&q=80" },
+  { id: "paneer", name: "Paneer", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80" },
+  { id: "butter", name: "Butter & Makhan", img: "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&w=400&q=80" },
+  { id: "curd", name: "Fresh Curd", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=400&q=80" }
 ];
 
-const TESTIMONIALS = [
-  { n: 'Simran Kaur', r: 'Ludhiana', s: 5, t: 'The ghee smells exactly like my grandmother’s kitchen. We have not bought any other brand in two years.', p: 21 },
-  { n: 'Rahul Mehta', r: 'Chandigarh', s: 5, t: 'Milk arrives before 6 AM, still cold, and the bottle is dated. Reliable every single day.', p: 32 },
-  { n: 'Anita Sharma', r: 'Amritsar', s: 4, t: 'The paneer is soft and never rubbery. My kids also love the strawberry yogurt.', p: 45 }
+// Why Choose Us Cards
+const whyUs = [
+  { icon: "🌿", title: "100% Organic Fodder", text: "Our cows eat organic feed grown directly on our farms in Punjab." },
+  { icon: "🧈", title: "Vedic Bilona Process", text: "Traditional curd churning method preserving rich nutrients in our Ghee." },
+  { icon: "🚚", title: "Early Morning Delivery", text: "Delivered to your doorstep in Jalandhar Cantt before 6:00 AM." }
 ];
 
-const FAQS = [
-  ['Where do you deliver?', 'We currently deliver across Ludhiana, Chandigarh, Jalandhar and Amritsar, and we add new areas every month.'],
-  ['What time will my order arrive?', 'Morning slots run from 5 AM to 8 AM and evening slots from 5 PM to 7 PM. On-demand orders arrive within 60 minutes.'],
-  ['Is your milk pasteurised and preservative-free?', 'Yes. Milk is gently pasteurised and never contains preservatives, detergents or added water.'],
-  ['Can I pause or cancel a subscription?', 'Yes. Pause, skip or cancel any day before 10 PM the previous night from your account.'],
-  ['What is your refund policy?', 'If any product is not fresh, message us within 12 hours with a photo and we will refund or replace it at once.']
+// Testimonials
+const testimonials = [
+  { name: "Gurpreet Kaur", location: "Sadar Bazar, Jalandhar Cantt", text: "The A2 Bilona Desi Ghee has the exact same golden granular texture my grandmother used to make at home!", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80" },
+  { name: "Amit Sharma", location: "Cantt Road, Jalandhar", text: "Timely delivery every morning. The milk and paneer are noticeably fresher than packet brands.", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
 ];
 
-/* ---------- State ---------- */
-let cart = store.get('pd_cart', []);          // [{id, qty}]
-let wishlist = store.get('pd_wish', []);      // [id]
-const qtyPick = {};                           // quantity chosen on each card
+// FAQ
+const faqs = [
+  { q: "Where is Koms Dairy located?", a: "We are located at Koms Dairy, Sadar Bazar, Cantt Road, Jalandhar Cantt, Punjab 144005." },
+  { q: "How is your Desi Ghee prepared?", a: "Our Ghee is hand-churned using the traditional Vedic Bilona method from fresh cultured curd, preserving aroma and health benefits." },
+  { q: "What time is morning delivery scheduled?", a: "All subscriptions in Jalandhar Cantt are delivered between 5:30 AM and 7:00 AM daily." }
+];
 
-/* ---------- Render: categories, filter, footer ---------- */
-$('#categoryGrid').innerHTML = CATEGORIES.map((c, i) => `
-  <div class="cat reveal" data-cat="${c.name}" tabindex="0" role="button" aria-label="Show ${c.name}">
-    ${imgTag(img(c.kw, i + 60, 400, 400), c.name)}<span>${c.name}</span>
-  </div>`).join('');
-$('#filter').innerHTML = '<option value="All">All categories</option>' + CATEGORIES.map(c => `<option>${c.name}</option>`).join('');
-$('#footCats').innerHTML = CATEGORIES.map(c => `<a href="#products" data-cat="${c.name}">${c.name}</a>`).join('');
+// Cart State
+let cart = [];
 
-/* ---------- Render: Why, testimonials, FAQ ---------- */
-$('#whyGrid').innerHTML = WHY.map(w => `<div class="why reveal"><div class="ic">${w[0]}</div><h3>${w[1]}</h3><p>${w[2]}</p></div>`).join('');
-const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
-$('#testiGrid').innerHTML = TESTIMONIALS.map(t => `
-  <div class="testi reveal"><div class="stars">${stars(t.s)}</div><p>“${t.t}”</p>
-  <div class="who">${imgTag(`https://i.pravatar.cc/100?img=${t.p}`, t.n)}<div><b>${t.n}</b><small>${t.r}</small></div></div></div>`).join('');
-$('#faqList').innerHTML = FAQS.map(f => `
-  <div class="faq-item"><button class="faq-q" aria-expanded="false">${f[0]}</button><div class="faq-a"><p>${f[1]}</p></div></div>`).join('');
+// DOM Elements
+document.addEventListener("DOMContentLoaded", () => {
+  // Hide Loader
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if(loader) {
+      loader.style.opacity = "0";
+      setTimeout(() => loader.style.display = "none", 500);
+    }
+  }, 400);
 
-/* ---------- FAQ accordion ---------- */
-$('#faqList').addEventListener('click', e => {
-  const q = e.target.closest('.faq-q'); if (!q) return;
-  const item = q.parentElement, open = !item.classList.contains('open');
-  $$('.faq-item').forEach(i => { i.classList.remove('open'); $('.faq-a', i).style.maxHeight = null; $('.faq-q', i).setAttribute('aria-expanded', 'false'); });
-  if (open) { item.classList.add('open'); $('.faq-a', item).style.maxHeight = $('.faq-a', item).scrollHeight + 'px'; q.setAttribute('aria-expanded', 'true'); }
+  // Set Current Year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Render Initial Components
+  renderCategories();
+  renderFilterOptions();
+  renderProducts(products);
+  renderWhyUs();
+  renderTestimonials();
+  renderFAQs();
+
+  // Event Listeners
+  setupEventListeners();
 });
 
-/* ---------- Products: search, filter, sort ---------- */
-function renderProducts() {
-  const term = $('#search').value.trim().toLowerCase();
-  const cat = $('#filter').value, sort = $('#sort').value;
-  let list = PRODUCTS.filter(p => (cat === 'All' || p.cat === cat) &&
-    (p.name + p.desc + p.cat).toLowerCase().includes(term));
-  const sorters = {
-    low: (a, b) => a.price - b.price, high: (a, b) => b.price - a.price,
-    rating: (a, b) => b.rating - a.rating, name: (a, b) => a.name.localeCompare(b.name)
-  };
-  if (sorters[sort]) list.sort(sorters[sort]);
-  $('#noResults').hidden = list.length > 0;
-  $('#productGrid').innerHTML = list.map(p => `
-    <article class="card" data-id="${p.id}">
-      <div class="pic">${imgTag(p.image, p.name)}
-        <button class="wish ${wishlist.includes(p.id) ? 'on' : ''}" aria-label="Add ${p.name} to wishlist">${wishlist.includes(p.id) ? '♥' : '♡'}</button></div>
-      <div class="body">
-        <h3>${p.name}</h3><p>${p.desc}</p>
-        <div class="stars">${stars(p.rating)} <small>${p.rating} (${p.reviews})</small></div>
-        <div class="price">${money(p.price)}</div>
-        <div class="buy">
-          <div class="qty"><button data-act="dec" aria-label="Decrease">−</button><span>${qtyPick[p.id] || 1}</span><button data-act="inc" aria-label="Increase">+</button></div>
-          <button class="btn primary" data-act="add">Add to Cart</button>
+function renderCategories() {
+  const grid = document.getElementById("categoryGrid");
+  const footGrid = document.getElementById("footCats");
+  
+  grid.innerHTML = categories.filter(c => c.id !== 'all').map(cat => `
+    <div class="cat-card" onclick="filterByCategory('${cat.id}')">
+      <img src="${cat.img}" alt="${cat.name}" loading="lazy">
+      <div class="cat-card-body">
+        <h3>${cat.name}</h3>
+      </div>
+    </div>
+  `).join('');
+
+  footGrid.innerHTML = categories.filter(c => c.id !== 'all').map(cat => `
+    <a href="#products" onclick="filterByCategory('${cat.id}')">${cat.name}</a>
+  `).join('');
+}
+
+function renderFilterOptions() {
+  const select = document.getElementById("filter");
+  select.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+}
+
+function renderProducts(items) {
+  const grid = document.getElementById("productGrid");
+  const noRes = document.getElementById("noResults");
+
+  if(items.length === 0) {
+    grid.innerHTML = "";
+    noRes.hidden = false;
+    return;
+  }
+
+  noRes.hidden = true;
+  grid.innerHTML = items.map(p => `
+    <div class="product-card">
+      <div class="product-img" onclick="openProductModal('${p.id}')">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+      </div>
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <p>${p.desc}</p>
+        <div class="product-bottom">
+          <span class="price">₹${p.price}</span>
+          <button class="btn primary" onclick="addToCart('${p.id}')">Add +</button>
         </div>
       </div>
-    </article>`).join('');
-}
-['input', 'change'].forEach(ev => { $('#search').addEventListener(ev, renderProducts); $('#filter').addEventListener(ev, renderProducts); $('#sort').addEventListener(ev, renderProducts); });
-
-function setCategory(name) {
-  $('#filter').value = name; $('#search').value = ''; renderProducts();
-  $('#products').scrollIntoView({ behavior: 'smooth' });
-}
-document.addEventListener('click', e => {
-  const c = e.target.closest('[data-cat]'); if (c) { e.preventDefault(); setCategory(c.dataset.cat); }
-});
-$('#categoryGrid').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.click(); });
-
-/* Product card actions (quantity, add, wishlist) */
-$('#productGrid').addEventListener('click', e => {
-  const card = e.target.closest('.card'); if (!card) return;
-  const id = +card.dataset.id, span = $('.qty span', card);
-  if (e.target.closest('.wish')) {
-    wishlist = wishlist.includes(id) ? wishlist.filter(x => x !== id) : [...wishlist, id];
-    store.set('pd_wish', wishlist);
-    const on = wishlist.includes(id), b = e.target.closest('.wish');
-    b.classList.toggle('on', on); b.textContent = on ? '♥' : '♡';
-    toast(on ? 'Added to wishlist' : 'Removed from wishlist'); return;
-  }
-  const act = e.target.dataset.act; if (!act) return;
-  if (act === 'inc') span.textContent = qtyPick[id] = Math.min(10, (qtyPick[id] || 1) + 1);
-  if (act === 'dec') span.textContent = qtyPick[id] = Math.max(1, (qtyPick[id] || 1) - 1);
-  if (act === 'add') { addToCart(id, qtyPick[id] || 1); span.textContent = qtyPick[id] = 1; }
-});
-
-/* ---------- Shopping cart ---------- */
-function addToCart(id, qty) {
-  const it = cart.find(c => c.id === id);
-  it ? it.qty += qty : cart.push({ id, qty });
-  saveCart(); toast('Added to cart');
-}
-function saveCart() { store.set('pd_cart', cart); renderCart(); }
-function renderCart() {
-  const box = $('#cartItems');
-  box.innerHTML = cart.length ? cart.map(c => {
-    const p = PRODUCTS.find(x => x.id === c.id);
-    return `<div class="ci" data-id="${p.id}">${imgTag(p.image, p.name)}
-      <div><h4>${p.name}</h4><small>${money(p.price)} each</small>
-        <div class="qty"><button data-act="dec" aria-label="Decrease">−</button><span>${c.qty}</span><button data-act="inc" aria-label="Increase">+</button></div></div>
-      <div><b>${money(p.price * c.qty)}</b><br><button class="rm" data-act="rm" aria-label="Remove ${p.name}">🗑</button></div></div>`;
-  }).join('') : '<p class="empty">Your cart is empty. Add something fresh!</p>';
-  const sub = cart.reduce((s, c) => s + PRODUCTS.find(x => x.id === c.id).price * c.qty, 0);
-  const tax = sub * TAX_RATE;
-  $('#subtotal').textContent = money(sub); $('#tax').textContent = money(tax); $('#total').textContent = money(sub + tax);
-  $('#cartCount').textContent = cart.reduce((s, c) => s + c.qty, 0);
-}
-$('#cartItems').addEventListener('click', e => {
-  const row = e.target.closest('.ci'), act = e.target.dataset.act; if (!row || !act) return;
-  const id = +row.dataset.id, it = cart.find(c => c.id === id);
-  if (act === 'inc') it.qty++;
-  if (act === 'dec') it.qty--;
-  if (act === 'rm' || it.qty < 1) cart = cart.filter(c => c.id !== id);
-  saveCart();
-});
-const toggleCart = open => { $('#cart').classList.toggle('open', open); $('#overlay').classList.toggle('show', open); };
-$('#cartBtn').onclick = () => toggleCart(true);
-$('#closeCart').onclick = $('#overlay').onclick = () => toggleCart(false);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') toggleCart(false); });
-$('#checkout').onclick = () => {
-  if (!cart.length) return toast('Your cart is empty');
-  cart = []; saveCart(); toggleCart(false); toast('Order placed! Thank you 💚');
-};
-
-/* ---------- Toast ---------- */
-let toastTimer;
-function toast(msg) {
-  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+    </div>
+  `).join('');
 }
 
-/* ---------- Form validation ---------- */
-const emailOk = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-$('#newsForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const v = $('#newsEmail').value.trim(), m = $('#newsMsg');
-  const ok = emailOk(v);
-  m.className = ok ? 'ok' : 'err';
-  m.textContent = ok ? 'Thanks for subscribing! Check your inbox.' : 'Enter a valid email address, like name@example.com.';
-  if (ok) e.target.reset();
-});
-$('#contactForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const rules = [
-    ['cName', v => v.length >= 2, 'Enter your name (at least 2 characters).'],
-    ['cEmail', emailOk, 'Enter a valid email address.'],
-    ['cPhone', v => /^[6-9]\d{9}$/.test(v.replace(/[\s-]/g, '')), 'Enter a valid 10-digit mobile number.'],
-    ['cMsg', v => v.length >= 10, 'Write a message of at least 10 characters.']
-  ];
-  let valid = true;
-  rules.forEach(([id, test, msg]) => {
-    const f = $('#' + id), ok = test(f.value.trim());
-    f.parentElement.querySelector('small').textContent = ok ? '' : msg;
-    if (!ok) valid = false;
+function renderWhyUs() {
+  const grid = document.getElementById("whyGrid");
+  grid.innerHTML = whyUs.map(w => `
+    <div class="feature-box">
+      <div style="font-size:2rem;margin-bottom:10px">${w.icon}</div>
+      <h3>${w.title}</h3>
+      <p style="color:var(--text-muted);margin-top:6px">${w.text}</p>
+    </div>
+  `).join('');
+}
+
+function renderTestimonials() {
+  const grid = document.getElementById("testiGrid");
+  grid.innerHTML = testimonials.map(t => `
+    <div class="testi-card">
+      <div class="testi-header">
+        <img src="${t.img}" alt="${t.name}">
+        <div>
+          <h4>${t.name}</h4>
+          <small style="color:var(--text-muted)">${t.location}</small>
+        </div>
+      </div>
+      <p>"${t.text}"</p>
+    </div>
+  `).join('');
+}
+
+function renderFAQs() {
+  const list = document.getElementById("faqList");
+  list.innerHTML = faqs.map((f, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-question" onclick="toggleFaq(${i})">
+        <span>${f.q}</span>
+        <span>+</span>
+      </button>
+      <div class="faq-answer">${f.a}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFaq(index) {
+  const item = document.getElementById(`faq-${index}`);
+  item.classList.toggle("active");
+}
+
+function setupEventListeners() {
+  // Dark Mode Toggle
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    const isDark = document.body.getAttribute("data-theme") === "dark";
+    document.body.setAttribute("data-theme", isDark ? "light" : "dark");
+    document.getElementById("themeToggle").textContent = isDark ? "🌙" : "☀️";
   });
-  const out = $('#formMsg');
-  out.className = valid ? 'ok' : 'err';
-  out.textContent = valid ? 'Message sent! We will reply within one working day.' : 'Please fix the highlighted fields.';
-  if (valid) e.target.reset();
-});
 
-/* ---------- Theme toggle (persisted) ---------- */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  $('#themeToggle').textContent = t === 'dark' ? '☀️' : '🌙';
-  store.set('pd_theme', t);
+  // Mobile Burger Menu Toggle
+  document.getElementById("burger").addEventListener("click", () => {
+    document.getElementById("menu").classList.toggle("show");
+  });
+
+  // Search Input
+  document.getElementById("search").addEventListener("input", filterProducts);
+  document.getElementById("filter").addEventListener("change", filterProducts);
+  document.getElementById("sort").addEventListener("change", filterProducts);
+
+  // Cart Drawer Listeners
+  document.getElementById("cartBtn").addEventListener("click", toggleCart);
+  document.getElementById("closeCart").addEventListener("click", toggleCart);
+  document.getElementById("overlay").addEventListener("click", toggleCart);
+
+  // Modal Listener
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+
+  // Back to top button
+  window.addEventListener("scroll", () => {
+    const btn = document.getElementById("toTop");
+    if (window.scrollY > 300) btn.classList.add("show");
+    else btn.classList.remove("show");
+  });
+
+  document.getElementById("toTop").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
-setTheme(store.get('pd_theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-$('#themeToggle').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 
-/* ---------- Mobile menu, sticky nav, scroll-to-top ---------- */
-$('#burger').onclick = () => { const o = $('#menu').classList.toggle('open'); $('#burger').textContent = o ? '✕' : '☰'; };
-$$('#menu a').forEach(a => a.addEventListener('click', () => { $('#menu').classList.remove('open'); $('#burger').textContent = '☰'; }));
-addEventListener('scroll', () => {
-  $('#navbar').classList.toggle('sticky', scrollY > 40);
-  $('#toTop').classList.toggle('show', scrollY > 500);
-}, { passive: true });
-$('#toTop').onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+function filterByCategory(catId) {
+  document.getElementById("filter").value = catId;
+  filterProducts();
+  document.getElementById("products").scrollIntoView({ behavior: 'smooth' });
+}
 
-/* ---------- Scroll reveal ---------- */
-const io = new IntersectionObserver(es => es.forEach(en => {
-  if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-}), { threshold: .12 });
-$$('.reveal').forEach(el => io.observe(el));
+function filterProducts() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const category = document.getElementById("filter").value;
+  const sort = document.getElementById("sort").value;
 
-/* ---------- Init ---------- */
-$('#year').textContent = new Date().getFullYear();
-renderProducts();
-renderCart();
-addEventListener('load', () => setTimeout(() => $('#loader').classList.add('hide'), 700));
+  let result = products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+    const matchesCategory = category === "all" || p.category === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  if (sort === "low") result.sort((a, b) => a.price - b.price);
+  if (sort === "high") result.sort((a, b) => b.price - a.price);
+  if (sort === "rating") result.sort((a, b) => b.rating - a.rating);
+  if (sort === "name") result.sort((a, b) => a.name.localeCompare(b.name));
+
+  renderProducts(result);
+}
+
+// Shopping Cart Functions
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  if(!product) return;
+
+  const existing = cart.find(item => item.id === id);
+  if(existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+
+  updateCartUI();
+  showToast(`${product.name} added to cart!`);
+}
+
+function addToCartDirect(id, name, price) {
+  addToCart(id);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(item => item.id !== id);
+  updateCartUI();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(item) {
+    item.qty += delta;
+    if(item.qty <= 0) {
+      removeFromCart(id);
+    } else {
+      updateCartUI();
+    }
+  }
+}
+
+function updateCartUI() {
+  const countEl = document.getElementById("cartCount");
+  const cartItems = document.getElementById("cartItems");
+  const subtotalEl = document.getElementById("subtotal");
+  const taxEl = document.getElementById("tax");
+  const totalEl = document.getElementById("total");
+  const shipProgress = document.getElementById("shipProgress");
+
+  const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+  const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+  const tax = subtotal * 0.05;
+  const total = subtotal + tax;
+
+  countEl.textContent = totalQty;
+  subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
+  taxEl.textContent = `₹${tax.toFixed(2)}`;
+  totalEl.textContent = `₹${total.toFixed(2)}`;
+
+  // Free delivery bar threshold ₹199
+  const progressPercent = Math.min((subtotal / 199) * 100, 100);
+  shipProgress.style.width = `${progressPercent}%`;
+
+  if(cart.length === 0) {
+    cartItems.innerHTML = `<p style="text-align:center;color:var(--text-muted);margin-top:40px;">Your basket is empty.</p>`;
+  } else {
+    cartItems.innerHTML = cart.map(item => `
+      <div class="cart-item">
+        <img src="${item.img}" alt="${item.name}">
+        <div style="flex:1">
+          <h4 style="font-size:0.95rem">${item.name}</h4>
+          <span style="color:var(--primary);font-weight:bold">₹${item.price}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <button onclick="changeQty('${item.id}', -1)" class="icon-btn" style="width:28px;height:28px">-</button>
+          <span>${item.qty}</span>
+          <button onclick="changeQty('${item.id}', 1)" class="icon-btn" style="width:28px;height:28px">+</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function toggleCart() {
+  document.getElementById("cart").classList.toggle("active");
+  document.getElementById("overlay").classList.toggle("active");
+}
+
+function openProductModal(id) {
+  const product = products.find(p => p.id === id);
+  if(!product) return;
+
+  const modalBody = document.getElementById("modalBody");
+  modalBody.innerHTML = `
+    <img src="${product.img}" alt="${product.name}" style="width:100%;height:250px;object-fit:cover;border-radius:12px;margin-bottom:16px;">
+    <h2>${product.name}</h2>
+    <p style="color:var(--text-muted);margin:10px 0;">${product.desc}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;">
+      <span style="font-size:1.6rem;font-weight:bold;color:var(--primary)">₹${product.price}</span>
+      <button class="btn primary" onclick="addToCart('${product.id}');closeModal();">Add to Cart</button>
+    </div>
+  `;
+  document.getElementById("productModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("productModal").style.display = "none";
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}
